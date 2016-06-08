@@ -18,3 +18,11 @@ connection.connect(function(err){
   }
   console.log('Connection established');
 });
+var snp_id = ''
+
+connection.query('SELECT Allele.allele FROM Allele JOIN SNPAncestralAllele on SNPAncestralAllele.ancestral_allele_id = Allele.allele_id \
+ WHERE SNPAncestralAllele.snp_id = ? LIMIT 1', process.argv[2], function(err, data){
+  if(err) throw err;
+  console.log('Data received from DB: ')
+  console.log(data)
+})
