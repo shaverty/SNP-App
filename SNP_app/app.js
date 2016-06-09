@@ -4,56 +4,34 @@
 
 var mysql      = require('mysql');
 var express    = require('express');
+var database   = require('./database/db')
 
 //Holds connection settings to SQL
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: 'password',
-  database: 'alleles'
+  database: 'alleles',
+  port: 3306
 });
-var app = express();
+
+
 
 //Connects to SQL
 connection.connect(function(err){
   if(err){
-    console.log('Error connecting to Db');
+    console.log('Error connecting to DB');
     return;
   }
   console.log('Connection established');
-});
+})
 
-//Returns Promise with Ancestor allele data
-function getAncestralAllele(snp_id){
-  return new Promise(function(resolve, reject) {
-    //Fetch allele
-    connection.query('SELECT Allele.allele FROM Allele JOIN SNPAncestralAllele on SNPAncestralAllele.ancestral_allele_id = Allele.allele_id \
-     WHERE SNPAncestralAllele.snp_id = ? LIMIT 1', snp_id, function(err, data){
-      if (data.length == 0){
-        resolve(undefined);
-      } else {
-        resolve(data[0].allele);
-      }
-
-    });
-
+  console.log('Starting server.');
+  new Promise(function(resolve, reject) {
+    var app = express();
+    var api = require('./api/api')(app, database);
+    app.listen(3000)
   });
-}
 
 
-app.get("/search",function(req,res){
-  var snp_id = req.query.snp_id;
-  
-  //Get the Ancestral Allele from database
-  getAncestralAllele(snp_id).then(function(allele){
-    if(!allele){
-        res.status(404).send('SNP not found.');
-    } else {
-      res.status(200).send({
-        allele
-      });
-    }
-  });
-});
-
-app.listen(3000)
+  console.log('Server started.');
