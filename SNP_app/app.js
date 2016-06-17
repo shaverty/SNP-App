@@ -5,14 +5,15 @@
 var mysql      = require('mysql');
 var express    = require('express');
 var database   = require('./database/db')
+var config     = require('./config/config')
 
 //Holds connection settings to SQL
 var connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'alleles',
-  port: 3306
+  config.host,
+  config.user,
+  config.password
+  config.database
+  config.port
 });
 
 
