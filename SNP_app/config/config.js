@@ -5,7 +5,7 @@
 module.exports = {
   host: 'localhost',
   user: 'root',
-  passowrd: 'password',
+  password: 'password',
   database: 'alleles',
   port: 3306
 };

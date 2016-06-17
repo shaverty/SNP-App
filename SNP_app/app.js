@@ -9,11 +9,11 @@ var config     = require('./config/config')
 
 //Holds connection settings to SQL
 var connection = mysql.createConnection({
-  config.host,
-  config.user,
-  config.password
-  config.database
-  config.port
+  host: config.host,
+  user: config.user,
+  password: config.password,
+  database: config.database,
+  port: config.port
 });
 
 
